@@ -190,7 +190,7 @@ export default function CloudVaultShowcase() {
               {/* Mock Address Bar */}
               <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-950/80 border border-slate-800 text-[11px] font-mono text-slate-400 w-1/2 max-w-sm truncate">
                 <Lock className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span className="truncate">cloud-based-file-storage-system.vercel.app</span>
+                <span className="truncate">cloud-based-file-storage-system-delta.vercel.app</span>
               </div>
 
               {/* Fullscreen / Zoom trigger */}

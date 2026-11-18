@@ -262,7 +262,7 @@ export const PROJECTS: Project[] = [
       { label: "Auth Paradigm", value: "JWT + BCrypt" },
       { label: "Architecture", value: "Decoupled REST" },
     ],
-    liveUrl: "https://namansingh68.github.io/cloud-based-file-storage-system/",
+    liveUrl: "https://cloud-based-file-storage-system-delta.vercel.app",
     githubUrl: "https://github.com/Namansingh68/cloud-based-file-storage-system",
     screenshots: CLOUDVAULT_SCREENSHOTS,
   },
