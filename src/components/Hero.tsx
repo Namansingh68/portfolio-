@@ -99,13 +99,14 @@ export default function Hero({ onOpenResume }: HeroProps) {
             <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
           </a>
 
-          <button
-            onClick={onOpenResume}
+          <a
+            href="/Naman_Kumar_Resume.pdf"
+            download="Naman_Kumar_Resume.pdf"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-slate-200 hover:text-white bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 shadow-lg shadow-black/30 backdrop-blur-md transition-all hover:scale-[1.02] active:scale-95 group"
           >
             <Download className="w-4 h-4 text-sky-400 group-hover:-translate-y-0.5 transition-transform" />
             <span>Download Resume</span>
-          </button>
+          </a>
         </motion.div>
 
         {/* Social Links Bar */}

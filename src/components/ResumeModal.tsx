@@ -15,7 +15,7 @@ import {
   Trophy,
   Code2,
   CheckCircle2,
-  HelpCircle,
+  FileCheck2,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { PERSONAL_INFO, PROJECTS, EXPERIENCES, ACHIEVEMENTS, SKILL_CATEGORIES } from "@/data/portfolioData";
@@ -26,22 +26,32 @@ interface ResumeModalProps {
 }
 
 export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
-  const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
-  const handlePrintOrDownload = () => {
+  const handleDownloadPDF = () => {
     try {
       confetti({
-        particleCount: 70,
-        spread: 50,
+        particleCount: 75,
+        spread: 60,
         origin: { y: 0.6 },
         colors: ["#38bdf8", "#818cf8", "#34d399"],
       });
-      setDownloadSuccess(true);
-      setTimeout(() => setDownloadSuccess(false), 3000);
-      window.print();
-    } catch {
-      window.print();
-    }
+    } catch {}
+
+    setDownloading(true);
+    setTimeout(() => setDownloading(false), 2000);
+
+    // Direct 1-Page PDF Download
+    const link = document.createElement("a");
+    link.href = "/Naman_Kumar_Resume.pdf";
+    link.download = "Naman_Kumar_Resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   if (!isOpen) return null;
@@ -64,33 +74,29 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 <div className="w-3 h-3 rounded-full bg-amber-500/80" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
               </div>
-              <span className="text-xs font-mono text-slate-300 font-medium">
-                Naman_Kumar_Resume.pdf
+              <span className="text-xs font-mono text-slate-300 font-medium flex items-center gap-1.5">
+                <FileCheck2 className="w-3.5 h-3.5 text-sky-400" />
+                Naman_Kumar_Resume.pdf (1 Page ATS Format)
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-slate-400 font-mono pr-2">
-                <HelpCircle className="w-3 h-3 text-sky-400" />
-                Destination: Choose &quot;Save as PDF&quot;
-              </span>
-
               <button
-                onClick={handlePrintOrDownload}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors"
-                title="Print Resume"
+                onClick={handlePrint}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors"
+                title="Print preview"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Print</span>
               </button>
 
               <button
-                onClick={handlePrintOrDownload}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 rounded-lg shadow-sm transition-all active:scale-95"
-                title="Save / Download as PDF"
+                onClick={handleDownloadPDF}
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 rounded-lg shadow-sm transition-all active:scale-95 font-semibold"
+                title="Download 1-Page PDF"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>{downloadSuccess ? "Opening Dialog..." : "Save as PDF"}</span>
+                <span>{downloading ? "Downloading..." : "Download 1-Page PDF"}</span>
               </button>
 
               <button
@@ -109,17 +115,17 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             className="overflow-y-auto p-6 sm:p-10 space-y-6 text-slate-300 print:text-slate-900 print:bg-white print:p-0 print:space-y-4"
           >
             {/* Top Identity Header */}
-            <div className="border-b border-slate-800 pb-5 print:pb-3 print:border-b-2 print:border-sky-600">
+            <div className="border-b border-slate-800 pb-5 print:pb-2 print:border-b-2 print:border-sky-600">
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white print:text-sky-700 print:text-2xl">
+                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white print:text-sky-700 print:text-xl">
                     {PERSONAL_INFO.name}
                   </h1>
-                  <p className="text-sm font-medium text-sky-400 mt-0.5 print:text-slate-800 print:font-semibold">
+                  <p className="text-sm font-medium text-sky-400 mt-0.5 print:text-slate-800 print:font-semibold print:text-xs">
                     Full Stack Developer • Computer Science Undergraduate
                   </p>
                 </div>
-                <div className="text-xs text-slate-400 print:text-slate-700 space-y-0.5 sm:text-right font-mono">
+                <div className="text-xs text-slate-400 print:text-slate-700 space-y-0.5 sm:text-right font-mono print:text-[10px]">
                   <div>Jaipur, Rajasthan, India</div>
                   <div>
                     <a href={`mailto:${PERSONAL_INFO.email}`} className="text-sky-400 print:text-sky-700 hover:underline">
@@ -130,7 +136,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 mt-3 text-xs font-mono print:text-xs">
+              <div className="flex flex-wrap items-center gap-3 mt-3 text-xs font-mono print:text-[10px] print:mt-1">
                 <a
                   href={PERSONAL_INFO.github}
                   target="_blank"
@@ -154,45 +160,45 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
 
             {/* Education */}
-            <section className="resume-section-block space-y-2">
+            <section className="resume-section-block space-y-1.5">
               <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-sky-400 print:text-sky-800 print-section-heading">
                 <GraduationCap className="w-3.5 h-3.5 no-print" />
                 <span>Education</span>
               </div>
-              <div className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3.5 print:border-none print:p-0">
+              <div className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 print:border-none print:p-0">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between">
-                  <h3 className="text-sm font-bold text-white print:text-slate-900">
+                  <h3 className="text-xs font-bold text-white print:text-slate-900">
                     {PERSONAL_INFO.university}
                   </h3>
-                  <span className="text-xs text-slate-400 print:text-slate-600 font-mono">
-                    Expected Graduation: {PERSONAL_INFO.graduationYear}
+                  <span className="text-xs text-slate-400 print:text-slate-600 font-mono print:text-[10px]">
+                    Expected: {PERSONAL_INFO.graduationYear}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300 print:text-slate-700 font-medium mt-0.5">
+                <p className="text-xs text-slate-300 print:text-slate-700 font-medium mt-0.5 print:text-[10px]">
                   {PERSONAL_INFO.degree}
                 </p>
-                <p className="text-[11px] text-slate-400 print:text-slate-600 mt-1">
-                  Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming (Java/C++), Operating Systems, Database Management Systems, System Architecture.
+                <p className="text-[11px] text-slate-400 print:text-slate-600 mt-0.5 print:text-[9.5px]">
+                  Coursework: Data Structures & Algorithms, Object-Oriented Programming (Java/C++), Operating Systems, DBMS.
                 </p>
               </div>
             </section>
 
             {/* Technical Skills */}
-            <section className="resume-section-block space-y-2">
+            <section className="resume-section-block space-y-1.5">
               <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-sky-400 print:text-sky-800 print-section-heading">
                 <Code2 className="w-3.5 h-3.5 no-print" />
                 <span>Technical Skills</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs print:grid-cols-2 print:gap-1.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs print:grid-cols-2 print:gap-1">
                 {SKILL_CATEGORIES.map((category) => (
                   <div
                     key={category.title}
                     className="resume-card-item bg-slate-900/30 border border-slate-800/80 rounded-lg p-2.5 print:border-none print:p-0"
                   >
-                    <span className="font-semibold text-slate-200 print:text-slate-900 block mb-0.5 text-[11px]">
+                    <span className="font-semibold text-slate-200 print:text-slate-900 block mb-0.5 text-[11px] print:text-[10px]">
                       {category.title}:
                     </span>
-                    <p className="text-slate-400 print:text-slate-700 text-[11px]">
+                    <p className="text-slate-400 print:text-slate-700 text-[11px] print:text-[9.5px]">
                       {category.skills.map((s) => s.name).join(", ")}
                     </p>
                   </div>
@@ -201,7 +207,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </section>
 
             {/* Featured Projects */}
-            <section className="resume-section-block space-y-3">
+            <section className="resume-section-block space-y-2">
               <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-sky-400 print:text-sky-800 print-section-heading">
                 <Briefcase className="w-3.5 h-3.5 no-print" />
                 <span>Projects</span>
@@ -210,16 +216,16 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {PROJECTS.map((project) => (
                 <div
                   key={project.id}
-                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3.5 print:border-none print:p-0 space-y-1.5"
+                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 print:border-none print:p-0 space-y-1"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                    <h3 className="text-sm font-bold text-white print:text-slate-900 flex items-center gap-2">
+                    <h3 className="text-xs font-bold text-white print:text-slate-900 flex items-center gap-2">
                       {project.title}
                       <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 font-normal print:hidden">
                         {project.category}
                       </span>
                     </h3>
-                    <div className="flex items-center gap-3 text-xs font-mono">
+                    <div className="flex items-center gap-3 text-xs font-mono print:text-[10px]">
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
@@ -241,20 +247,20 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-300 print:text-slate-700 leading-relaxed">
+                  <p className="text-xs text-slate-300 print:text-slate-700 leading-relaxed print:text-[10px]">
                     {project.description}
                   </p>
 
-                  <div className="text-[11px] text-slate-400 print:text-slate-600">
+                  <div className="text-[11px] text-slate-400 print:text-slate-600 print:text-[9.5px]">
                     <span className="font-semibold text-slate-300 print:text-slate-800">Key Features: </span>
-                    {project.features.slice(0, 5).join(" • ")}
+                    {project.features.slice(0, 4).join(" • ")}
                   </div>
 
-                  <div className="flex flex-wrap gap-1 pt-0.5">
+                  <div className="flex flex-wrap gap-1 pt-0.5 print:pt-0">
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60 print:bg-slate-100 print:text-slate-800 print:border-slate-300"
+                        className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60 print:bg-slate-100 print:text-slate-800 print:border-slate-300 print:text-[9px]"
                       >
                         {tech}
                       </span>
@@ -265,7 +271,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </section>
 
             {/* Experience */}
-            <section className="resume-section-block space-y-2">
+            <section className="resume-section-block space-y-1.5">
               <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-sky-400 print:text-sky-800 print-section-heading">
                 <Briefcase className="w-3.5 h-3.5 no-print" />
                 <span>Work Experience</span>
@@ -273,18 +279,18 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {EXPERIENCES.map((exp) => (
                 <div
                   key={exp.company}
-                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3.5 print:border-none print:p-0 space-y-1"
+                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 print:border-none print:p-0 space-y-1"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                     <div>
-                      <h3 className="text-sm font-bold text-white print:text-slate-900">{exp.role}</h3>
-                      <p className="text-xs text-sky-400 print:text-slate-700 font-medium">{exp.company}</p>
+                      <h3 className="text-xs font-bold text-white print:text-slate-900">{exp.role}</h3>
+                      <p className="text-xs text-sky-400 print:text-slate-700 font-medium print:text-[10px]">{exp.company}</p>
                     </div>
-                    <span className="text-xs text-slate-400 print:text-slate-600 font-mono">
+                    <span className="text-xs text-slate-400 print:text-slate-600 font-mono print:text-[10px]">
                       {exp.period}
                     </span>
                   </div>
-                  <ul className="list-disc list-inside text-xs text-slate-300 print:text-slate-700 space-y-0.5">
+                  <ul className="list-disc list-inside text-xs text-slate-300 print:text-slate-700 space-y-0.5 print:text-[10px]">
                     {exp.description.map((item, idx) => (
                       <li key={idx}>{item}</li>
                     ))}
@@ -294,7 +300,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </section>
 
             {/* Achievements */}
-            <section className="resume-section-block space-y-2">
+            <section className="resume-section-block space-y-1.5">
               <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-sky-400 print:text-sky-800 print-section-heading">
                 <Trophy className="w-3.5 h-3.5 no-print" />
                 <span>Achievements & Honors</span>
@@ -302,14 +308,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               {ACHIEVEMENTS.map((ach) => (
                 <div
                   key={ach.event}
-                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3.5 print:border-none print:p-0 space-y-1"
+                  className="resume-card-item bg-slate-900/40 border border-slate-800/80 rounded-xl p-3 print:border-none print:p-0 space-y-0.5"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                     <h3 className="text-xs font-bold text-white print:text-slate-900">{ach.title}</h3>
-                    <span className="text-xs text-slate-400 print:text-slate-600 font-mono">{ach.period}</span>
+                    <span className="text-xs text-slate-400 print:text-slate-600 font-mono print:text-[10px]">{ach.period}</span>
                   </div>
-                  <p className="text-xs text-slate-300 print:text-slate-700">{ach.description}</p>
-                  <div className="text-xs text-sky-300 print:text-sky-700 font-medium flex items-center gap-1">
+                  <p className="text-xs text-slate-300 print:text-slate-700 print:text-[10px]">{ach.description}</p>
+                  <div className="text-xs text-sky-300 print:text-sky-700 font-medium flex items-center gap-1 print:text-[10px]">
                     <CheckCircle2 className="w-3 h-3 no-print" />
                     <span>{ach.result}</span>
                   </div>
