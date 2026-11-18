@@ -19,10 +19,12 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-[#080c14] text-slate-100 selection:bg-sky-500/20 selection:text-sky-300">
       {/* Floating Global Navbar */}
-      <Navbar onOpenResume={() => setResumeOpen(true)} />
+      <div className="no-print">
+        <Navbar onOpenResume={() => setResumeOpen(true)} />
+      </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col no-print">
         <Hero onOpenResume={() => setResumeOpen(true)} />
         <About />
         <Skills />
@@ -34,7 +36,9 @@ export default function Home() {
       </main>
 
       {/* Global Minimal Footer */}
-      <Footer />
+      <div className="no-print">
+        <Footer />
+      </div>
 
       {/* Interactive In-Browser Resume Modal */}
       <ResumeModal

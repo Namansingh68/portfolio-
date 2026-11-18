@@ -88,3 +88,122 @@
   background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
+
+/* ========================================================
+   CRITICAL PRINT STYLES FOR RESUME PDF GENERATION
+   ======================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 12mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10.5pt !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    color-scheme: light !important;
+  }
+
+  /* Completely hide all page background elements */
+  header,
+  main,
+  footer,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force modal backdrop to be invisible and unpositioned */
+  .resume-modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .resume-modal-window {
+    position: static !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    max-height: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  /* Target the printable resume sheet */
+  #printable-resume-container {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    overflow: visible !important;
+  }
+
+  /* Force high-contrast dark text and clean borders for print */
+  #printable-resume-container * {
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    background-color: transparent !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  #printable-resume-container h1 {
+    color: #0284c7 !important;
+  }
+
+  #printable-resume-container h2,
+  #printable-resume-container h3 {
+    color: #0f172a !important;
+  }
+
+  #printable-resume-container .print-section-heading {
+    color: #0369a1 !important;
+    border-bottom: 1.5px solid #0284c7 !important;
+    padding-bottom: 2px !important;
+    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  #printable-resume-container .print-badge {
+    border: 1px solid #94a3b8 !important;
+    background: #f8fafc !important;
+    color: #334155 !important;
+  }
+
+  #printable-resume-container a {
+    text-decoration: none !important;
+    color: #0284c7 !important;
+  }
+
+  /* Prevent awkward page break splits across cards */
+  .resume-section-block,
+  .resume-card-item {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
